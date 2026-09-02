@@ -1,0 +1,26 @@
+{
+  "name": "currency-telegram-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot that returns currency exchange rates",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/src/server.js",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "fastify": "^5.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.2.2"
+}
