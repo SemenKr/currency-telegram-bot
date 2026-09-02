@@ -11,5 +11,12 @@ export const buildApp = (): FastifyInstance => {
         };
     });
 
+    app.get('/', async () => {
+        return {
+            name: 'Currency Telegram Bot',
+            status: 'running',
+        };
+    });
+
     return app;
 };
