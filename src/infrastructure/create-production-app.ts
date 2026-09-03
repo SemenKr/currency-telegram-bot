@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 import { FrankfurterCurrencyRateProvider } from '../adapters/currency/frankfurter-currency-rate-provider.js';
 import { TelegramBotApiMessageSender } from '../adapters/telegram/telegram-bot-api-message-sender.js';
-import { buildApp } from '../app.js';
+import { buildApp } from '../build-app.js';
 import { loadConfig } from './config/env.js';
 
 export const createProductionApp = () => {
