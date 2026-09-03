@@ -49,6 +49,41 @@ describe('HandleBotMessage', () => {
         );
     });
 
+    it('sends an identical USD rate without a date', async () => {
+        const getRate = vi
+            .fn<CurrencyRateProvider['getRate']>();
+
+        const sendMessage = vi
+            .fn<BotMessageSender['sendMessage']>()
+            .mockResolvedValue(undefined);
+
+        const provider: CurrencyRateProvider = {
+            getRate,
+        };
+
+        const messageSender: BotMessageSender = {
+            sendMessage,
+        };
+
+        const getCurrencyRate = new GetCurrencyRate(provider);
+        const processCurrencyMessage = new ProcessCurrencyMessage(
+            getCurrencyRate,
+        );
+        const handleBotMessage = new HandleBotMessage(
+            processCurrencyMessage,
+            messageSender,
+        );
+
+        await handleBotMessage.execute(123456, 'USD');
+
+        expect(sendMessage).toHaveBeenCalledWith(
+            123456,
+            '1 USD = 1 USD',
+        );
+
+        expect(getRate).not.toHaveBeenCalled();
+    });
+
     it('sends a hint when the currency code is absent', async () => {
         const getRate = vi
             .fn<CurrencyRateProvider['getRate']>()

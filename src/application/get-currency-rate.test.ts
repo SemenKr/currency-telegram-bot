@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { GetCurrencyRate } from '../../src/application/use-cases/get-currency-rate.js';
 import type {
@@ -30,6 +30,27 @@ describe('GetCurrencyRate', () => {
             rate: 1.159,
             date: '2026-09-01',
         });
+    });
+
+    it('returns an identical USD rate without calling the provider', async () => {
+        const getRate = vi
+            .fn<CurrencyRateProvider['getRate']>();
+
+        const provider: CurrencyRateProvider = {
+            getRate,
+        };
+
+        const useCase = new GetCurrencyRate(provider);
+
+        const result = await useCase.execute('usd');
+
+        expect(result).toEqual({
+            base: 'USD',
+            quote: 'USD',
+            rate: 1,
+        });
+
+        expect(getRate).not.toHaveBeenCalled();
     });
 
     it('rejects a currency code with an invalid format', async () => {

@@ -1,11 +1,13 @@
 import { extractCurrencyCode } from '../../domain/services/extract-currency-code.js';
-import type { CurrencyRate } from '../../domain/ports/currency-rate-provider.js';
-import { GetCurrencyRate } from './get-currency-rate.js';
+import {
+    GetCurrencyRate,
+    type GetCurrencyRateResult,
+} from './get-currency-rate.js';
 
 export type ProcessCurrencyMessageResult =
     | {
     type: 'rate-found';
-    rate: CurrencyRate;
+    rate: GetCurrencyRateResult;
 }
     | {
     type: 'currency-code-not-found';

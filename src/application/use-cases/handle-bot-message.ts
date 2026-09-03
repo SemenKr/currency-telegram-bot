@@ -64,8 +64,11 @@ export class HandleBotMessage {
                 responseText = currencyCodeNotFoundMessage;
             } else {
                 const { base, quote, rate, date } = result.rate;
+                const dateText = date === undefined
+                    ? ''
+                    : `\nКурс на ${date}`;
 
-                responseText = `1 ${base} = ${rate} ${quote}\nКурс на ${date}`;
+                responseText = `1 ${base} = ${rate} ${quote}${dateText}`;
             }
         } catch {
             responseText = currencyRateUnavailableMessage;
