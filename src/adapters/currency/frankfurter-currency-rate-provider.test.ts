@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.js';
 import { FrankfurterCurrencyRateProvider } from './frankfurter-currency-rate-provider.js';
 
 describe('FrankfurterCurrencyRateProvider', () => {
@@ -71,6 +72,22 @@ describe('FrankfurterCurrencyRateProvider', () => {
         );
     });
 
+    it('maps a 404 response to an unsupported currency error', async () => {
+        const fetchMock = vi
+            .fn<typeof fetch>()
+            .mockResolvedValue(new Response(null, { status: 404 }));
+
+        const provider = new FrankfurterCurrencyRateProvider(fetchMock);
+        const request = provider.getRate('ZZZ', 'USD');
+
+        await expect(request).rejects.toBeInstanceOf(
+            UnsupportedCurrencyError,
+        );
+        await expect(request).rejects.toMatchObject({
+            currencyCode: 'ZZZ',
+        });
+    });
+
     it('throws when the requested rate is absent', async () => {
         // Arrange — HTTP-запрос успешен, но нужного курса в JSON нет.
         // Это отличается от предыдущего теста: response.ok здесь будет true.
@@ -97,8 +114,11 @@ describe('FrankfurterCurrencyRateProvider', () => {
 
         // Адаптер должен проверить не только HTTP-статус,
         // но и наличие запрошенного курса в данных.
-        await expect(provider.getRate('EUR', 'USD')).rejects.toThrow(
-            'Rate EUR/USD was not found',
+        await expect(provider.getRate('EUR', 'USD')).rejects.toMatchObject(
+            {
+                name: 'UnsupportedCurrencyError',
+                currencyCode: 'USD',
+            },
         );
     });
     it('throws when Frankfurter returns invalid data', async () => {

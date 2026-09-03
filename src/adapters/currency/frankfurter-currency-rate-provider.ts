@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.js';
 import type {
     CurrencyRate,
     CurrencyRateProvider,
@@ -29,6 +30,12 @@ export class FrankfurterCurrencyRateProvider
 
         const response = await this.fetcher(url);
 
+        if (response.status === 404) {
+            // Внешний HTTP-статус преобразуется в понятную приложению
+            // доменную ошибку на границе адаптера.
+            throw new UnsupportedCurrencyError(base);
+        }
+
         if (!response.ok) {
             throw new Error(
                 `Frankfurter API request failed with status ${response.status}`,
@@ -48,7 +55,9 @@ export class FrankfurterCurrencyRateProvider
         const rate = data.rates[quote];
 
         if (rate === undefined) {
-            throw new Error(`Rate ${base}/${quote} was not found`);
+            // Валидный ответ без запрошенной валюты означает,
+            // что внешняя система не поддерживает эту пару.
+            throw new UnsupportedCurrencyError(quote);
         }
 
         // Адаптер переводит внешний формат Frankfurter

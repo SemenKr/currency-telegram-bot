@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.js';
 import type { BotMessageSender } from '../../domain/ports/bot-message-sender.js';
 import type { CurrencyRateProvider } from '../../domain/ports/currency-rate-provider.js';
 import { GetCurrencyRate } from './get-currency-rate.js';
@@ -161,6 +162,41 @@ describe('HandleBotMessage', () => {
             'Не удалось получить курс валюты. Проверьте код или попробуйте ещё раз позже.',
         );
     });
+
+    it('sends a specific message for an unsupported currency', async () => {
+        const getRate = vi
+            .fn<CurrencyRateProvider['getRate']>()
+            .mockRejectedValue(new UnsupportedCurrencyError('ZZZ'));
+
+        const sendMessage = vi
+            .fn<BotMessageSender['sendMessage']>()
+            .mockResolvedValue(undefined);
+
+        const provider: CurrencyRateProvider = {
+            getRate,
+        };
+
+        const messageSender: BotMessageSender = {
+            sendMessage,
+        };
+
+        const getCurrencyRate = new GetCurrencyRate(provider);
+        const processCurrencyMessage = new ProcessCurrencyMessage(
+            getCurrencyRate,
+        );
+        const handleBotMessage = new HandleBotMessage(
+            processCurrencyMessage,
+            messageSender,
+        );
+
+        await handleBotMessage.execute(123456, 'ZZZ');
+
+        expect(sendMessage).toHaveBeenCalledWith(
+            123456,
+            'Код валюты ZZZ не поддерживается. Пример: EUR, GBP или JPY.',
+        );
+    });
+
     it('sends a welcome message for the start command', async () => {
         const getRate = vi
             .fn<CurrencyRateProvider['getRate']>()

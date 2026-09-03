@@ -1,4 +1,5 @@
 import type { BotMessageSender } from '../../domain/ports/bot-message-sender.js';
+import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.js';
 import { ProcessCurrencyMessage } from './process-currency-message.js';
 
 const startMessage = [
@@ -70,8 +71,12 @@ export class HandleBotMessage {
 
                 responseText = `1 ${base} = ${rate} ${quote}${dateText}`;
             }
-        } catch {
-            responseText = currencyRateUnavailableMessage;
+        } catch (error) {
+            if (error instanceof UnsupportedCurrencyError) {
+                responseText = `Код валюты ${error.currencyCode} не поддерживается. Пример: EUR, GBP или JPY.`;
+            } else {
+                responseText = currencyRateUnavailableMessage;
+            }
         }
 
         // Ошибка отправки должна подняться до транспортного слоя:
