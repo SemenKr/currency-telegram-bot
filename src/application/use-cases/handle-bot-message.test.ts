@@ -123,7 +123,103 @@ describe('HandleBotMessage', () => {
 
         expect(sendMessage).toHaveBeenCalledWith(
             123456,
-            'Не удалось получить курс валюты. Попробуйте ещё раз позже.',
+            'Не удалось получить курс валюты. Проверьте код или попробуйте ещё раз позже.',
         );
+    });
+    it('sends a welcome message for the start command', async () => {
+        const getRate = vi
+            .fn<CurrencyRateProvider['getRate']>()
+            .mockResolvedValue({
+                base: 'EUR',
+                quote: 'USD',
+                rate: 1.1578,
+                date: '2026-09-02',
+            });
+
+        const sendMessage = vi
+            .fn<BotMessageSender['sendMessage']>()
+            .mockResolvedValue(undefined);
+
+        const provider: CurrencyRateProvider = {
+            getRate,
+        };
+
+        const messageSender: BotMessageSender = {
+            sendMessage,
+        };
+
+        const getCurrencyRate = new GetCurrencyRate(provider);
+        const processCurrencyMessage = new ProcessCurrencyMessage(
+            getCurrencyRate,
+        );
+        const handleBotMessage = new HandleBotMessage(
+            processCurrencyMessage,
+            messageSender,
+        );
+
+        await handleBotMessage.execute(
+            123456,
+            '/start@krekotun_currency_bot',
+        );
+
+        expect(sendMessage).toHaveBeenCalledWith(
+            123456,
+            [
+                'Привет! Я показываю курс валюты относительно доллара США.',
+                '',
+                'Отправьте трёхбуквенный код валюты, например EUR, GBP или JPY.',
+            ].join('\n'),
+        );
+
+        expect(getRate).not.toHaveBeenCalled();
+    });
+    it('sends usage instructions for the help command', async () => {
+        const getRate = vi
+            .fn<CurrencyRateProvider['getRate']>()
+            .mockResolvedValue({
+                base: 'EUR',
+                quote: 'USD',
+                rate: 1.1578,
+                date: '2026-09-02',
+            });
+
+        const sendMessage = vi
+            .fn<BotMessageSender['sendMessage']>()
+            .mockResolvedValue(undefined);
+
+        const provider: CurrencyRateProvider = {
+            getRate,
+        };
+
+        const messageSender: BotMessageSender = {
+            sendMessage,
+        };
+
+        const getCurrencyRate = new GetCurrencyRate(provider);
+        const processCurrencyMessage = new ProcessCurrencyMessage(
+            getCurrencyRate,
+        );
+        const handleBotMessage = new HandleBotMessage(
+            processCurrencyMessage,
+            messageSender,
+        );
+
+        await handleBotMessage.execute(123456, '/help');
+
+        expect(sendMessage).toHaveBeenCalledWith(
+            123456,
+            [
+                'Отправьте код валюты или сообщение, содержащее код.',
+                '',
+                'Примеры:',
+                'EUR',
+                'Какой курс GBP?',
+                'Покажи курс JPY к доллару',
+                '',
+                'Курс является справочным.',
+            ].join('\n'),
+        );
+
+        expect(getRate).not.toHaveBeenCalled();
     });
 });
