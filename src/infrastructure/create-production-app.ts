@@ -1,11 +1,15 @@
 import 'dotenv/config';
 
+import type { FastifyInstance } from 'fastify';
+
 import { FrankfurterCurrencyRateProvider } from '../adapters/currency/frankfurter-currency-rate-provider.js';
 import { TelegramBotApiMessageSender } from '../adapters/telegram/telegram-bot-api-message-sender.js';
 import { buildApp } from '../build-app.js';
 import { loadConfig } from './config/env.js';
 
-export const createProductionApp = () => {
+export const createProductionApp = (
+    app: FastifyInstance,
+): FastifyInstance => {
     const config = loadConfig();
 
     // Composition root — единственное место, где конкретные
@@ -17,9 +21,12 @@ export const createProductionApp = () => {
         config.telegramBotToken,
     );
 
-    return buildApp({
-        currencyRateProvider,
-        botMessageSender,
-        telegramWebhookSecret: config.telegramWebhookSecret,
-    });
+    return buildApp(
+        {
+            currencyRateProvider,
+            botMessageSender,
+            telegramWebhookSecret: config.telegramWebhookSecret,
+        },
+        app,
+    );
 };

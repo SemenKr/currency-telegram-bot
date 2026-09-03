@@ -16,11 +16,10 @@ interface BuildAppOptions {
 
 export const buildApp = (
     options: BuildAppOptions,
-): FastifyInstance => {
-    const app = Fastify({
+    app: FastifyInstance = Fastify({
         logger: true,
-    });
-
+    }),
+): FastifyInstance => {
     const getCurrencyRate = new GetCurrencyRate(
         options.currencyRateProvider,
     );
