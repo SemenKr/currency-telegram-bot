@@ -1,33 +1,13 @@
-const jsonHeaders = {
-  "Content-Type": "application/json",
-};
+import { createTelegramWebhookHandler } from "./handler.ts";
 
-const STUDENT_ID = 5966;
+const telegramWebhookSecret = Deno.env.get("TELEGRAM_WEBHOOK_SECRET");
+
+if (telegramWebhookSecret === undefined || telegramWebhookSecret === "") {
+  throw new Error(
+    "Missing required environment variable: TELEGRAM_WEBHOOK_SECRET",
+  );
+}
 
 export default {
-  async fetch(request: Request): Promise<Response> {
-    if (request.method !== "POST") {
-      return Response.json(
-        { error: "Method Not Allowed" },
-        {
-          status: 405,
-          headers: {
-            ...jsonHeaders,
-            Allow: "POST",
-          },
-        },
-      );
-    }
-
-    return Response.json(
-      {
-        status: "ok",
-        runtime: "supabase-edge",
-        studentId: STUDENT_ID,
-      },
-      {
-        headers: jsonHeaders,
-      },
-    );
-  },
+  fetch: createTelegramWebhookHandler(telegramWebhookSecret),
 };
