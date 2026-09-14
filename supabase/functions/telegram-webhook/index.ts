@@ -1,3 +1,5 @@
+import "@supabase/functions-js/edge-runtime.d.ts";
+
 import { createTelegramWebhookHandler } from "./handler.ts";
 
 const telegramWebhookSecret = Deno.env.get("TELEGRAM_WEBHOOK_SECRET");
