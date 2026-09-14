@@ -1,4 +1,7 @@
-import type { BotMessageSender } from '../../domain/ports/bot-message-sender.ts';
+import type {
+    BotMessageOptions,
+    BotMessageSender,
+} from '../../domain/ports/bot-message-sender.ts';
 import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.ts';
 import { ProcessCurrencyMessage } from './process-currency-message.ts';
 
@@ -55,6 +58,19 @@ const helpMessage = [
     'Курс является справочным.',
 ].join('\n');
 
+const navigationKeyboard: BotMessageOptions = {
+    keyboard: {
+        rows: [
+            ['EUR', 'GBP', 'JPY'],
+            ['USD', 'CHF', 'CNY'],
+            ['/help'],
+        ],
+        resize: true,
+        persistent: true,
+        oneTime: false,
+    },
+};
+
 const currencyCodeNotFoundMessage =
     'Не удалось найти код валюты. Укажите трёхбуквенный код, например EUR, GBP или JPY. Для справки введите /help.';
 
@@ -83,12 +99,20 @@ export class HandleBotMessage {
         const command = extractCommand(text);
 
         if (command === '/start') {
-            await this.messageSender.sendMessage(chatId, startMessage);
+            await this.messageSender.sendMessage(
+                chatId,
+                startMessage,
+                navigationKeyboard,
+            );
             return;
         }
 
         if (command === '/help') {
-            await this.messageSender.sendMessage(chatId, helpMessage);
+            await this.messageSender.sendMessage(
+                chatId,
+                helpMessage,
+                navigationKeyboard,
+            );
             return;
         }
 
@@ -109,7 +133,12 @@ export class HandleBotMessage {
             }
         } catch (error) {
             if (error instanceof UnsupportedCurrencyError) {
-                responseText = `Код валюты ${error.currencyCode} не поддерживается. Пример: EUR, GBP или JPY.\n\nВведи /help, чтобы посмотреть список поддерживаемых валют.`;
+                await this.messageSender.sendMessage(
+                    chatId,
+                    `Код валюты ${error.currencyCode} не поддерживается. Пример: EUR, GBP или JPY.\n\nВведи /help, чтобы посмотреть список поддерживаемых валют.`,
+                    navigationKeyboard,
+                );
+                return;
             } else {
                 responseText = currencyRateUnavailableMessage;
             }

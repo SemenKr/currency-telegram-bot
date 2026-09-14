@@ -46,6 +46,53 @@ describe('TelegramBotApiMessageSender', () => {
         );
     });
 
+    it('maps a portable keyboard to Telegram reply_markup', async () => {
+        const fetchMock = vi.fn<typeof fetch>().mockResolvedValue(
+            Response.json({ ok: true }),
+        );
+        const sender = new TelegramBotApiMessageSender(
+            'test-token',
+            fetchMock,
+        );
+
+        await sender.sendMessage(123456, 'Choose a currency', {
+            keyboard: {
+                rows: [
+                    ['EUR', 'GBP', 'JPY'],
+                    ['USD', 'CHF', 'CNY'],
+                    ['/help'],
+                ],
+                resize: true,
+                persistent: true,
+                oneTime: false,
+            },
+        });
+
+        expect(fetchMock).toHaveBeenCalledWith(
+            'https://api.telegram.org/bottest-token/sendMessage',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: 123456,
+                    text: 'Choose a currency',
+                    reply_markup: {
+                        keyboard: [
+                            ['EUR', 'GBP', 'JPY'],
+                            ['USD', 'CHF', 'CNY'],
+                            ['/help'],
+                        ],
+                        resize_keyboard: true,
+                        is_persistent: true,
+                        one_time_keyboard: false,
+                    },
+                }),
+            },
+        );
+    });
+
     it('throws when Telegram returns an unsuccessful status', async () => {
         const fetchMock = vi
             .fn<typeof fetch>()

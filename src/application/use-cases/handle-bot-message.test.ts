@@ -7,6 +7,19 @@ import { GetCurrencyRate } from '../../../supabase/functions/_shared/application
 import { HandleBotMessage } from '../../../supabase/functions/_shared/application/use-cases/handle-bot-message.ts';
 import { ProcessCurrencyMessage } from '../../../supabase/functions/_shared/application/use-cases/process-currency-message.ts';
 
+const navigationKeyboardOptions = {
+    keyboard: {
+        rows: [
+            ['EUR', 'GBP', 'JPY'],
+            ['USD', 'CHF', 'CNY'],
+            ['/help'],
+        ],
+        resize: true,
+        persistent: true,
+        oneTime: false,
+    },
+};
+
 describe('HandleBotMessage', () => {
     it('sends a formatted currency rate', async () => {
         const getRate = vi
@@ -194,6 +207,7 @@ describe('HandleBotMessage', () => {
         expect(sendMessage).toHaveBeenCalledWith(
             123456,
             'Код валюты ZZZ не поддерживается. Пример: EUR, GBP или JPY.\n\nВведи /help, чтобы посмотреть список поддерживаемых валют.',
+            navigationKeyboardOptions,
         );
     });
 
@@ -240,6 +254,7 @@ describe('HandleBotMessage', () => {
                 '',
                 'Отправьте трёхбуквенный код валюты, например EUR, GBP или JPY.',
             ].join('\n'),
+            navigationKeyboardOptions,
         );
 
         expect(getRate).not.toHaveBeenCalled();
@@ -292,6 +307,7 @@ describe('HandleBotMessage', () => {
                 '',
                 'Курс является справочным.',
             ].join('\n'),
+            navigationKeyboardOptions,
         );
 
         expect(getRate).not.toHaveBeenCalled();

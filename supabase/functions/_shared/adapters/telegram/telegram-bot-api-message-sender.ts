@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
-import type { BotMessageSender } from '../../domain/ports/bot-message-sender.ts';
+import type {
+    BotMessageOptions,
+    BotMessageSender,
+} from '../../domain/ports/bot-message-sender.ts';
 
 const telegramApiResponseSchema = z.object({
     ok: z.boolean(),
@@ -21,7 +24,13 @@ export class TelegramBotApiMessageSender implements BotMessageSender {
         this.apiBaseUrl = `https://api.telegram.org/bot${botToken}`;
     }
 
-    async sendMessage(chatId: number, text: string): Promise<void> {
+    async sendMessage(
+        chatId: number,
+        text: string,
+        options?: BotMessageOptions,
+    ): Promise<void> {
+        const keyboard = options?.keyboard;
+
         const response = await this.fetcher(
             `${this.apiBaseUrl}/sendMessage`,
             {
@@ -32,6 +41,16 @@ export class TelegramBotApiMessageSender implements BotMessageSender {
                 body: JSON.stringify({
                     chat_id: chatId,
                     text,
+                    ...(keyboard === undefined
+                        ? {}
+                        : {
+                            reply_markup: {
+                                keyboard: keyboard.rows,
+                                resize_keyboard: keyboard.resize,
+                                is_persistent: keyboard.persistent,
+                                one_time_keyboard: keyboard.oneTime,
+                            },
+                        }),
                 }),
             },
         );
