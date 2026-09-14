@@ -11,5 +11,8 @@ if (telegramWebhookSecret === undefined || telegramWebhookSecret === "") {
 }
 
 export default {
-  fetch: createTelegramWebhookHandler(telegramWebhookSecret),
+  fetch: createTelegramWebhookHandler(
+    telegramWebhookSecret,
+    async () => {},
+  ),
 };

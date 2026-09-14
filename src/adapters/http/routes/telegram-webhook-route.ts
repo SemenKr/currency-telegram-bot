@@ -1,18 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import { z } from 'zod';
-
-const telegramUpdateSchema = z.object({
-    update_id: z.number().int(),
-    message: z
-        .object({
-            message_id: z.number().int(),
-            chat: z.object({
-                id: z.number().int().safe(),
-            }),
-            text: z.string().optional(),
-        })
-        .optional(),
-});
+import { telegramUpdateSchema } from '../../../../supabase/functions/_shared/adapters/http/telegram-update-schema.ts';
 
 interface BotMessageHandler {
     execute(chatId: number, text: string): Promise<void>;
