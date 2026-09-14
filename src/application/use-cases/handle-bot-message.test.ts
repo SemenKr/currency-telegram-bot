@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.js';
-import type { BotMessageSender } from '../../domain/ports/bot-message-sender.js';
-import type { CurrencyRateProvider } from '../../domain/ports/currency-rate-provider.js';
-import { GetCurrencyRate } from './get-currency-rate.js';
-import { HandleBotMessage } from './handle-bot-message.js';
-import { ProcessCurrencyMessage } from './process-currency-message.js';
+import { UnsupportedCurrencyError } from '../../../supabase/functions/_shared/domain/errors/unsupported-currency-error.ts';
+import type { BotMessageSender } from '../../../supabase/functions/_shared/domain/ports/bot-message-sender.ts';
+import type { CurrencyRateProvider } from '../../../supabase/functions/_shared/domain/ports/currency-rate-provider.ts';
+import { GetCurrencyRate } from '../../../supabase/functions/_shared/application/use-cases/get-currency-rate.ts';
+import { HandleBotMessage } from '../../../supabase/functions/_shared/application/use-cases/handle-bot-message.ts';
+import { ProcessCurrencyMessage } from '../../../supabase/functions/_shared/application/use-cases/process-currency-message.ts';
 
 describe('HandleBotMessage', () => {
     it('sends a formatted currency rate', async () => {

@@ -1,7 +1,7 @@
 import type {
     CurrencyRate,
     CurrencyRateProvider,
-} from '../../domain/ports/currency-rate-provider.js';
+} from '../../domain/ports/currency-rate-provider.ts';
 
 export type GetCurrencyRateResult = Omit<CurrencyRate, 'date'> & {
     date?: string;

@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 
-import type { GetCurrencyRate } from '../../../application/use-cases/get-currency-rate.js';
+import type { GetCurrencyRate } from '../../../../supabase/functions/_shared/application/use-cases/get-currency-rate.ts';
 
 interface CurrencyRateParams {
     currency: string;

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.js';
-import { FrankfurterCurrencyRateProvider } from './frankfurter-currency-rate-provider.js';
+import { UnsupportedCurrencyError } from '../../../supabase/functions/_shared/domain/errors/unsupported-currency-error.ts';
+import { FrankfurterCurrencyRateProvider } from '../../../supabase/functions/_shared/adapters/currency/frankfurter-currency-rate-provider.ts';
 
 describe('FrankfurterCurrencyRateProvider', () => {
     it('requests and maps a currency rate', async () => {

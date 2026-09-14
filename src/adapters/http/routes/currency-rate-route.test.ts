@@ -1,8 +1,8 @@
 import Fastify from 'fastify';
 import { describe, expect, it, vi } from 'vitest';
 
-import { GetCurrencyRate } from '../../../application/use-cases/get-currency-rate.js';
-import type { CurrencyRateProvider } from '../../../domain/ports/currency-rate-provider.js';
+import { GetCurrencyRate } from '../../../../supabase/functions/_shared/application/use-cases/get-currency-rate.ts';
+import type { CurrencyRateProvider } from '../../../../supabase/functions/_shared/domain/ports/currency-rate-provider.ts';
 import { registerCurrencyRateRoute } from './currency-rate-route.js';
 
 describe('currency rate route', () => {

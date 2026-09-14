@@ -1,8 +1,8 @@
-import { extractCurrencyCode } from '../../domain/services/extract-currency-code.js';
+import { extractCurrencyCode } from '../../domain/services/extract-currency-code.ts';
 import {
     GetCurrencyRate,
     type GetCurrencyRateResult,
-} from './get-currency-rate.js';
+} from './get-currency-rate.ts';
 
 export type ProcessCurrencyMessageResult =
     | {

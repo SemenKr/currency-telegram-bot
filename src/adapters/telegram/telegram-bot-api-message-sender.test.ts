@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { TelegramBotApiMessageSender } from './telegram-bot-api-message-sender.js';
+import { TelegramBotApiMessageSender } from '../../../supabase/functions/_shared/adapters/telegram/telegram-bot-api-message-sender.ts';
 
 describe('TelegramBotApiMessageSender', () => {
     it('sends a text message to a Telegram chat', async () => {

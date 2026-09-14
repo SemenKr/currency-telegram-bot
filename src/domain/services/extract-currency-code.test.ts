@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { extractCurrencyCode } from './extract-currency-code.js';
+import { extractCurrencyCode } from '../../../supabase/functions/_shared/domain/services/extract-currency-code.ts';
 
 describe('extractCurrencyCode', () => {
     it('extracts an uppercase currency code from text', () => {

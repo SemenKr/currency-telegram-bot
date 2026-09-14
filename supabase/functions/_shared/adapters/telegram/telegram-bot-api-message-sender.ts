@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import type { BotMessageSender } from '../../domain/ports/bot-message-sender.js';
+import type { BotMessageSender } from '../../domain/ports/bot-message-sender.ts';
 
 const telegramApiResponseSchema = z.object({
     ok: z.boolean(),

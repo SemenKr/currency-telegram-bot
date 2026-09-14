@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import type { CurrencyRateProvider } from '../../domain/ports/currency-rate-provider.js';
-import { GetCurrencyRate } from './get-currency-rate.js';
-import { ProcessCurrencyMessage } from './process-currency-message.js';
+import type { CurrencyRateProvider } from '../../../supabase/functions/_shared/domain/ports/currency-rate-provider.ts';
+import { GetCurrencyRate } from '../../../supabase/functions/_shared/application/use-cases/get-currency-rate.ts';
+import { ProcessCurrencyMessage } from '../../../supabase/functions/_shared/application/use-cases/process-currency-message.ts';
 
 describe('ProcessCurrencyMessage', () => {
     it('extracts a currency code and returns its rate', async () => {

@@ -1,6 +1,6 @@
-import type { BotMessageSender } from '../../domain/ports/bot-message-sender.js';
-import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.js';
-import { ProcessCurrencyMessage } from './process-currency-message.js';
+import type { BotMessageSender } from '../../domain/ports/bot-message-sender.ts';
+import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.ts';
+import { ProcessCurrencyMessage } from './process-currency-message.ts';
 
 const startMessage = [
     'Привет! Я показываю курс валюты относительно доллара США.',

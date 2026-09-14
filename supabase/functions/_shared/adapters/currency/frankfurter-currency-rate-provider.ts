@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.js';
+import { UnsupportedCurrencyError } from '../../domain/errors/unsupported-currency-error.ts';
 import type {
     CurrencyRate,
     CurrencyRateProvider,
-} from '../../domain/ports/currency-rate-provider.js';
+} from '../../domain/ports/currency-rate-provider.ts';
 
 const frankfurterLatestResponseSchema = z.object({
     amount: z.number(),

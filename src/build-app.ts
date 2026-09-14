@@ -2,11 +2,11 @@ import Fastify, { type FastifyInstance } from 'fastify';
 
 import { registerCurrencyRateRoute } from './adapters/http/routes/currency-rate-route.js';
 import { registerTelegramWebhookRoute } from './adapters/http/routes/telegram-webhook-route.js';
-import { GetCurrencyRate } from './application/use-cases/get-currency-rate.js';
-import { HandleBotMessage } from './application/use-cases/handle-bot-message.js';
-import { ProcessCurrencyMessage } from './application/use-cases/process-currency-message.js';
-import type { BotMessageSender } from './domain/ports/bot-message-sender.js';
-import type { CurrencyRateProvider } from './domain/ports/currency-rate-provider.js';
+import { GetCurrencyRate } from '../supabase/functions/_shared/application/use-cases/get-currency-rate.ts';
+import { HandleBotMessage } from '../supabase/functions/_shared/application/use-cases/handle-bot-message.ts';
+import { ProcessCurrencyMessage } from '../supabase/functions/_shared/application/use-cases/process-currency-message.ts';
+import type { BotMessageSender } from '../supabase/functions/_shared/domain/ports/bot-message-sender.ts';
+import type { CurrencyRateProvider } from '../supabase/functions/_shared/domain/ports/currency-rate-provider.ts';
 
 interface BuildAppOptions {
     currencyRateProvider: CurrencyRateProvider;

@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { GetCurrencyRate } from '../../src/application/use-cases/get-currency-rate.js';
+import { GetCurrencyRate } from '../../supabase/functions/_shared/application/use-cases/get-currency-rate.ts';
 import type {
     CurrencyRate,
     CurrencyRateProvider,
-} from '../../src/domain/ports/currency-rate-provider.js';
+} from '../../supabase/functions/_shared/domain/ports/currency-rate-provider.ts';
 
 class FakeCurrencyRateProvider implements CurrencyRateProvider {
     async getRate(base: string, quote: string): Promise<CurrencyRate> {
