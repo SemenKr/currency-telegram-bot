@@ -123,7 +123,7 @@ describe('HandleBotMessage', () => {
 
         expect(sendMessage).toHaveBeenCalledWith(
             123456,
-            'Не удалось найти код валюты. Укажите трёхбуквенный код, например EUR, GBP или JPY.',
+            'Не удалось найти код валюты. Укажите трёхбуквенный код, например EUR, GBP или JPY. Для справки введите /help.',
         );
 
         expect(getRate).not.toHaveBeenCalled();

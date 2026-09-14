@@ -56,7 +56,7 @@ const helpMessage = [
 ].join('\n');
 
 const currencyCodeNotFoundMessage =
-    'Не удалось найти код валюты. Укажите трёхбуквенный код, например EUR, GBP или JPY.';
+    'Не удалось найти код валюты. Укажите трёхбуквенный код, например EUR, GBP или JPY. Для справки введите /help.';
 
 const currencyRateUnavailableMessage =
     'Не удалось получить курс валюты. Проверьте код или попробуйте ещё раз позже.';
