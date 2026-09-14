@@ -193,7 +193,7 @@ describe('HandleBotMessage', () => {
 
         expect(sendMessage).toHaveBeenCalledWith(
             123456,
-            'Код валюты ZZZ не поддерживается. Пример: EUR, GBP или JPY.',
+            'Код валюты ZZZ не поддерживается. Пример: EUR, GBP или JPY.\n\nВведи /help, чтобы посмотреть список поддерживаемых валют.',
         );
     });
 

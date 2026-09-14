@@ -109,7 +109,7 @@ export class HandleBotMessage {
             }
         } catch (error) {
             if (error instanceof UnsupportedCurrencyError) {
-                responseText = `Код валюты ${error.currencyCode} не поддерживается. Пример: EUR, GBP или JPY.`;
+                responseText = `Код валюты ${error.currencyCode} не поддерживается. Пример: EUR, GBP или JPY.\n\nВведи /help, чтобы посмотреть список поддерживаемых валют.`;
             } else {
                 responseText = currencyRateUnavailableMessage;
             }
